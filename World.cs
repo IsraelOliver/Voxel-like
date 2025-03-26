@@ -10,20 +10,32 @@ public class World
     public int Height { get; set; }
     public int[,] Terrain { get; set; }
 
+    private FastNoiseLite noise;
+
     public World(int width, int height)
     {
         Width = width;
         Height = height;
         Terrain = new int[Width, Height];
+
+        noise = new FastNoiseLite(); // Criando o gerador de ruído
+        noise.SetSeed(1337); // Define uma semente fixa (para gerar sempre o mesmo mundo)
+        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin); // Define o tipo de ruído
+        noise.SetFrequency(0.1f); // Define a frequência do ruído
+
         GenerateTerrain();
     }
 
     public void GenerateTerrain()
     {
-        Random rand = new Random();
-        for (int x = 0; x < Width; x++) {
-            for (int y = 0; y < Height; y++) {
-                Terrain[x, y] = rand.Next(0, 2); 
+        for (int x = 0; x < Width; x++) 
+        {
+            float height = (noise.GetNoise(x, 0) + 1) * 0.5f * Height; // Normaliza o valor para 0 a Height
+            int terrainHeight = (int)height;
+
+            for (int y = 0; y < Height; y++) 
+            {
+                Terrain[x, y] = (y > terrainHeight) ? 0 : 1; // Preenche com terra abaixo da altura gerada
             }
         }
     }

@@ -10,6 +10,7 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private World world;
     private Texture2D blockTexture;
+    private Camera camera;
 
     private enum Tool
     {
@@ -29,8 +30,8 @@ private Tool currentTool = Tool.Mine;
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-        world = new World(20, 15); // Mundo de 20x15 blocos
+        world = new World(50, 30); // Mundo maior
+        camera = new Camera(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         base.Initialize();
     }
 
@@ -44,6 +45,16 @@ private Tool currentTool = Tool.Mine;
         // TODO: use this.Content to load your game content here
     }
 
+    Vector2 GetMouseWorldPosition()
+    {
+        MouseState mouseState = Mouse.GetState();
+        Vector2 screenPosition = new Vector2(mouseState.X, mouseState.Y);
+
+        // Converter para coordenadas do mundo usando a matriz inversa da câmera
+        Matrix inverseTransform = Matrix.Invert(camera.GetTransform());
+        return Vector2.Transform(screenPosition, inverseTransform);
+    }
+
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -51,8 +62,8 @@ private Tool currentTool = Tool.Mine;
 
         KeyboardState keyboardState = Keyboard.GetState();
         MouseState mouseState = Mouse.GetState();
+        camera.Update(gameTime);
 
-        // Alternar ferramenta ao pressionar a tecla "T"
         if (keyboardState.IsKeyDown(Keys.T))
         {
             currentTool = currentTool == Tool.Mine ? Tool.Place : Tool.Mine;
@@ -60,8 +71,10 @@ private Tool currentTool = Tool.Mine;
 
         if (mouseState.LeftButton == ButtonState.Pressed)
         {
-            int cellX = mouseState.X / 32;
-            int cellY = mouseState.Y / 32;
+            Vector2 worldMousePos = GetMouseWorldPosition();
+            
+            int cellX = (int)(worldMousePos.X / 32);
+            int cellY = (int)(worldMousePos.Y / 32);
 
             if (currentTool == Tool.Mine)
             {
@@ -84,7 +97,7 @@ private Tool currentTool = Tool.Mine;
 
         // TODO: Add your drawing code here
 
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(transformMatrix: camera.GetTransform());
         world.Draw(_spriteBatch, blockTexture);
         _spriteBatch.End();
 
