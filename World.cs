@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -22,7 +21,7 @@ public class World
         Terrain = new int[Width, Height];
 
         noise = new FastNoiseLite();
-        noise.SetSeed(1337);
+        noise.SetSeed(1338);
         noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
         noise.SetFrequency(0.1f);
 
@@ -39,7 +38,6 @@ public class World
             for (int y = 0; y < Height; y++) 
             {
                 Terrain[x, y] = (y > terrainHeight) ? 0 : 1;
-                Console.WriteLine(Terrain);
             }
         }
     }

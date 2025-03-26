@@ -7,9 +7,9 @@ public class Camera
 {
     public Vector2 Position;
     public float Zoom { get; private set; }
-    public float Speed { get; set; } = 200f; // Velocidade de movimento
+    public float Speed { get; set; } = 500f; // Velocidade de movimento
     public float ZoomSpeed { get; set; } = 0.1f; // Velocidade do zoom
-    public float MinZoom { get; set; } = 0.5f; // Zoom mínimo
+    public float MinZoom { get; set; } = 0.1f; // Zoom mínimo
     public float MaxZoom { get; set; } = 2.0f; // Zoom máximo
 
     private Matrix _transform;
