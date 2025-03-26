@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VoxelLike")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82a2ab73b21555d9742f5e0752a043503bc78e5b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f44e9ccfabf5802c273001bb8b9adf5229961ddd")]
 [assembly: System.Reflection.AssemblyProductAttribute("VoxelLike")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VoxelLike")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

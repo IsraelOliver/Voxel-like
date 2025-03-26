@@ -9,16 +9,18 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private World world;
-    private Texture2D blockTexture;
     private Camera camera;
 
     private enum Tool
     {
-        Mine, // Remove blocos
-        Place // Adiciona blocos
+        Mine,
+        Place
     }
 
-private Tool currentTool = Tool.Mine;
+    private Tool currentTool = Tool.Mine;
+
+    private const int Width = 100;  // Defina o tamanho do mundo
+    private const int Height = 100; // Defina o tamanho do mundo
 
 
     public Game1()
@@ -30,7 +32,7 @@ private Tool currentTool = Tool.Mine;
 
     protected override void Initialize()
     {
-        world = new World(50, 30); // Mundo maior
+        
         camera = new Camera(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         base.Initialize();
     }
@@ -38,11 +40,10 @@ private Tool currentTool = Tool.Mine;
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        
+        Texture2D dirtTileTexture = Content.Load<Texture2D>("dirt");
+        world = new World(Width, Height, dirtTileTexture);
 
-        blockTexture = new Texture2D(GraphicsDevice, 1, 1);
-        blockTexture.SetData(new[] { Color.White });
-
-        // TODO: use this.Content to load your game content here
     }
 
     Vector2 GetMouseWorldPosition()
@@ -50,7 +51,6 @@ private Tool currentTool = Tool.Mine;
         MouseState mouseState = Mouse.GetState();
         Vector2 screenPosition = new Vector2(mouseState.X, mouseState.Y);
 
-        // Converter para coordenadas do mundo usando a matriz inversa da câmera
         Matrix inverseTransform = Matrix.Invert(camera.GetTransform());
         return Vector2.Transform(screenPosition, inverseTransform);
     }
@@ -98,7 +98,7 @@ private Tool currentTool = Tool.Mine;
         // TODO: Add your drawing code here
 
         _spriteBatch.Begin(transformMatrix: camera.GetTransform());
-        world.Draw(_spriteBatch, blockTexture);
+        world.Draw(_spriteBatch);
         _spriteBatch.End();
 
         base.Draw(gameTime);

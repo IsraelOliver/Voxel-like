@@ -9,19 +9,22 @@ public class World
     public int Width { get; set; }
     public int Height { get; set; }
     public int[,] Terrain { get; set; }
+    private Texture2D dirtTileTexture;
 
     private FastNoiseLite noise;
 
-    public World(int width, int height)
+    public World(int width, int height, Texture2D dirtTexture)
     {
+        dirtTileTexture = dirtTexture;
+
         Width = width;
         Height = height;
         Terrain = new int[Width, Height];
 
-        noise = new FastNoiseLite(); // Criando o gerador de ruído
-        noise.SetSeed(1337); // Define uma semente fixa (para gerar sempre o mesmo mundo)
-        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin); // Define o tipo de ruído
-        noise.SetFrequency(0.1f); // Define a frequência do ruído
+        noise = new FastNoiseLite();
+        noise.SetSeed(1337);
+        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        noise.SetFrequency(0.1f);
 
         GenerateTerrain();
     }
@@ -30,26 +33,32 @@ public class World
     {
         for (int x = 0; x < Width; x++) 
         {
-            float height = (noise.GetNoise(x, 0) + 1) * 0.5f * Height; // Normaliza o valor para 0 a Height
+            float height = (noise.GetNoise(x, 0) + 1) * 0.5f * Height;
             int terrainHeight = (int)height;
 
             for (int y = 0; y < Height; y++) 
             {
-                Terrain[x, y] = (y > terrainHeight) ? 0 : 1; // Preenche com terra abaixo da altura gerada
+                Terrain[x, y] = (y > terrainHeight) ? 0 : 1;
+                Console.WriteLine(Terrain);
             }
         }
     }
 
-    public void Draw(SpriteBatch spriteBatch, Texture2D blockTexture) 
+    public void Draw(SpriteBatch spriteBatch) 
     {
-        for (int x = 0; x < Width; x++) {
-            for (int y = 0; y < Height; y++) {
-                Color cellColor = Terrain[x, y] == 1 ? Color.Brown : Color.White;
-                spriteBatch.Draw(blockTexture, new Rectangle(x * 32, y * 32, 32, 32), cellColor);
+        for (int x = 0; x < Width; x++) 
+        {
+            for (int y = 0; y < Height; y++) 
+            {
+                
+                if (Terrain[x, y] == 0) 
+                {
+                    // Aqui você desenha a textura no local adequado
+                    spriteBatch.Draw(dirtTileTexture, new Vector2(x * 32, y * 32), Color.White);
+                }
             }
         }
     }
-
     public void Mine(int x, int y)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
@@ -62,7 +71,7 @@ public class World
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
-            Terrain[x, y] = 1; // Define o bloco como preenchido
+            Terrain[x, y] = 1;
         }
     }
 

@@ -24,3 +24,4 @@ c:\Users\Israel\Desktop\Israel\DotNet\Testes C#\VoxelLike\obj\Debug\net8.0\refin
 c:\Users\Israel\Desktop\Israel\DotNet\Testes C#\VoxelLike\obj\Debug\net8.0\VoxelLike.pdb
 c:\Users\Israel\Desktop\Israel\DotNet\Testes C#\VoxelLike\obj\Debug\net8.0\VoxelLike.genruntimeconfig.cache
 c:\Users\Israel\Desktop\Israel\DotNet\Testes C#\VoxelLike\obj\Debug\net8.0\ref\VoxelLike.dll
+c:\Users\Israel\Desktop\Israel\DotNet\Testes C#\VoxelLike\bin\Debug\net8.0\Content\dirt.xnb
